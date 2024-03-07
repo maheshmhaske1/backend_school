@@ -65,7 +65,7 @@ export class StudentService {
       
       <p>Please use the following URL to log in to your account:</p>
       
-      <p><a href="http://localhost:3000/admin-login">Login</a></p>
+      <p><a href="${process.env.STUDENT_URL}/admin-login">Login</a></p>
       
       <p>If you have any questions or need assistance, please feel free to contact us:</p>
       

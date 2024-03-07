@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
   config();
@@ -11,6 +12,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     transform: true, // Automatically transforms payload to DTO objects
   }));
+
+  dotenv.config();
 
   // Enable CORS for all origins
   app.enableCors({

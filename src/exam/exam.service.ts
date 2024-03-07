@@ -613,6 +613,10 @@ export class ExamService {
               preserveNullAndEmptyArrays: true,
             },
           },
+          {
+            $sort: { exam_score: -1 },
+          }
+
         ])
         .exec();
 
