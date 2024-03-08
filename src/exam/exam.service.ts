@@ -334,6 +334,87 @@ export class ExamService {
     }
   }
 
+  //findByOrganizationIdForAdmin
+  async findByOrganizationIdForAdmin(id) {
+    try {
+      const data = await this.examModel
+        .aggregate([
+          { $match: { status: true, organization_id: new Types.ObjectId(id) } },
+
+          {
+            $lookup: {
+              from: 'admins',
+              localField: 'created_by',
+              foreignField: '_id',
+              as: 'created_by',
+            },
+          },
+          {
+            $unwind: {
+              path: '$created_by',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+
+          {
+            $lookup: {
+              from: 'levels',
+              localField: 'level_id',
+              foreignField: '_id',
+              as: 'level_id',
+            },
+          },
+          {
+            $unwind: {
+              path: '$level_id',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+
+          {
+            $lookup: {
+              from: 'organizations',
+              localField: 'organization_id',
+              foreignField: '_id',
+              as: 'organization_id',
+            },
+          },
+          {
+            $unwind: {
+              path: '$organization_id',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $lookup: {
+              from: 'teachers',
+              localField: 'teacher_id',
+              foreignField: '_id',
+              as: 'teacher_id',
+            },
+          },
+          {
+            $unwind: {
+              path: '$teacher_id',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+        ])
+        .exec();
+
+      return {
+        success: true,
+        message: 'Exam list by id',
+        data: data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message,
+        data: [],
+      };
+    }
+  }
   //findByOrganizationLevel
   async findByOrganizationLevel(body) {
     try {

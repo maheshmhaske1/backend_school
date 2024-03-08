@@ -36,6 +36,12 @@ export class ExamController {
     return this.examService.findByOrganizationId(id);
   }
 
+  @Get('by-organization-id-for-admin/:id')
+  @UseGuards(AuthGuard)
+  findByOrganizationIdForAdmin(@Param('id') id: string) {
+    return this.examService.findByOrganizationIdForAdmin(id);
+  }
+
   @Post('by-organization-level')
   @UseGuards(AuthGuard)
   findByOrganizationLevel(@Body() body) {
